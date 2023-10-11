@@ -1,0 +1,57 @@
+scalar DateTime
+
+type User {
+  id: String!
+  username: String!
+  email: String! @constraint(format: "email")
+  password: String! @constraint(minLength: 8)
+  created_at: DateTime
+  posts: [Post!]
+}
+
+type Post {
+  id: String!
+  body: String!
+  username: String!
+  created_at: DateTime
+  comments: [Comment]
+  likes: [Like]
+  user: User!
+  userId: String!
+}
+
+type Comment {
+  id: String!
+  body: String!
+  username: String!
+  created_at: DateTime
+  post: Post!
+  postId: String!
+}
+
+type Like {
+  id: String!
+  username: String!
+  created_at: DateTime
+  post: Post!
+  postId: String!
+}
+
+type Query {
+  getPosts: [Post]
+}
+
+type Mutation {
+  register(
+    username: String!
+    email: String!
+    password: String!
+    confirmPassword: String!
+  ): User
+
+  login(email: String!, password: String!): Login
+}
+
+type Login {
+  accessToken: String!
+}
